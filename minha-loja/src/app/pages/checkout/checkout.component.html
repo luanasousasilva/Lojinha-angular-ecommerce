@@ -1,0 +1,126 @@
+<div class="container py-4">
+  <div class="glass-card p-4 mb-4">
+    <h2 class="mb-0">💳 Finalizar Compra</h2>
+    <p class="text-muted mb-0">Preencha seus dados para concluir o pedido</p>
+  </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="glass-card p-4">
+        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+          <h4 class="mb-4">📋 Dados Pessoais</h4>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="name" class="form-label">Nome Completo *</label>
+              <input type="text" id="name" formControlName="name" class="form-control" />
+              @if (checkoutForm.get('name')?.invalid && checkoutForm.get('name')?.touched){
+              <div class="text-danger">O nome é obrigatório</div>
+              }
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">E-mail *</label>
+              <input type="email" id="email" formControlName="email" class="form-control" />
+              @if (checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched) {
+              <div class="text-danger">
+                @if (checkoutForm.get('email')?.errors?.['required']) {
+                <div>O e-mail é obrigatório.</div>
+                }
+                @if (checkoutForm.get('email')?.errors?.['email']){
+                <div>Formato de e-mail inválido.</div>
+                }
+              </div>
+              }
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="phone" class="form-label">Telefone *</label>
+              <input type="tel" id="phone" formControlName="phone" class="form-control" />
+              @if (checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched){
+              <div class="text-danger">O telefone é obrigatório</div>
+              }
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="address" class="form-label">Endereço *</label>
+              <input type="text" id="address" formControlName="address" class="form-control" />
+              @if (checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched){
+              <div class="text-danger">O endereço é obrigatório</div>
+              }
+            </div>
+          </div>
+          <h4 class="mb-4 mt-5">💳 Dados do Cartão</h4>
+          <div class="mb-3">
+            <label for="cardNumber" class="form-label">Número do Cartão *</label>
+            <input type="text" id="cardNumber" formControlName="cardNumber" class="form-control" placeholder="0000 0000 0000 0000">
+            @if (checkoutForm.get('cardNumber')?.invalid && checkoutForm.get('cardNumber')?.touched) {
+            <div class="text-danger">
+              @if (checkoutForm.get('cardNumber')?.errors?.['required']) {
+              <div>O número do cartão é obrigatório.</div>
+              }
+              @if (checkoutForm.get('cardNumber')?.errors?.['minlength'] || checkoutForm.get('cardNumber')?.errors?.['maxlength']) {
+              <div>O número do cartão deve ter 16 dígitos.</div>
+              }
+              @if (checkoutForm.get('cardNumber')?.errors?.['numeric']) {
+              <div>O número do cartão deve conter apenas números.</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="expiryDate" class="form-label">Data de Validade (MM/AA) *</label>
+              <input type="text" id="expiryDate" formControlName="expiryDate" class="form-control" placeholder="MM/AA">
+              @if (checkoutForm.get('expiryDate')?.invalid && checkoutForm.get('expiryDate')?.touched) {
+              <div class="text-danger">
+                @if (checkoutForm.get('expiryDate')?.errors?.['required']) {
+                <div>A data de validade é obrigatória.</div>
+                }
+                @if (checkoutForm.get('expiryDate')?.errors?.['pattern']) {
+                <div>Formato de data inválido.</div>
+                }
+              </div>
+              }
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="securityCode" class="form-label">Código de Segurança *</label>
+              <input type="text" id="securityCode" formControlName="securityCode" class="form-control" placeholder="000">
+              @if (checkoutForm.get('securityCode')?.invalid && checkoutForm.get('securityCode')?.touched) {
+              <div class="text-danger">
+                @if (checkoutForm.get('securityCode')?.errors?.['required']) {
+                <div>O código de segurança é obrigatório.</div>
+                }
+                @if (checkoutForm.get('securityCode')?.errors?.['minlength'] || checkoutForm.get('securityCode')?.errors?.['maxlength']) {
+                <div>O código de segurança deve ter 3 dígitos.</div>
+                }
+                @if (checkoutForm.get('securityCode')?.errors?.['numeric']) {
+                <div>O código de segurança deve conter apenas números.</div>
+                }
+              </div>
+              }
+            </div>
+          </div>
+          <div class="d-grid gap-2 mt-4">
+            <button (click)="goToPayment()" class="btn btn-modern">
+              🚀 Finalizar Compra
+            </button>
+            <a routerLink="/cart" class="btn btn-outline-secondary">
+              ← Voltar ao Carrinho
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="glass-card p-4">
+        <h5 class="mb-3">📦 Resumo do Pedido</h5>
+        <div class="text-center">
+          <i class="fas fa-shopping-bag fa-3x text-primary mb-3"></i>
+          <p>Seu pedido será processado após o preenchimento dos dados</p>
+          <div class="alert alert-success">
+            <strong>Frete Grátis</strong> para todo o Brasil
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
