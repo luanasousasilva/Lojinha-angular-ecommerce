@@ -1,0 +1,188 @@
+<div class="container py-4">
+  <div class="glass-card p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">{{ isEditMode ? '✏️ Editar Produto' : '➕ Adicionar Novo Produto' }}</h2>
+      <button class="btn btn-outline-secondary" (click)="goBack()">
+        ← Voltar para Produtos
+      </button>
+    </div>
+  </div>
+
+  @if (isLoading) {
+  <div class="glass-card p-5 text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p class="mt-3">{{ isEditMode ? 'Carregando produto...' : 'Preparando formulário...' }}</p>
+  </div>
+  } @else {
+  <div class="glass-card p-4">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="title" class="form-label">Título do Produto *</label>
+            <input
+              type="text"
+              id="title"
+              formControlName="title"
+              class="form-control"
+              placeholder="Nome do produto"
+              [class.is-invalid]="productForm.get('title')?.invalid && productForm.get('title')?.touched">
+            @if (productForm.get('title')?.invalid && productForm.get('title')?.touched) {
+            <div class="invalid-feedback d-block">
+              Título é obrigatório e deve ter pelo menos 3 caracteres
+            </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="price" class="form-label">Preço *</label>
+            <input
+              type="number"
+              id="price"
+              formControlName="price"
+              class="form-control"
+              step="0.01"
+              min="0.01"
+              placeholder="0.00"
+              [class.is-invalid]="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+            @if (productForm.get('price')?.invalid && productForm.get('price')?.touched) {
+            <div class="invalid-feedback d-block">
+              Preço deve ser maior que zero
+            </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="stock" class="form-label">Quantidade em Estoque *</label>
+            <input
+              type="number"
+              id="stock"
+              formControlName="stock"
+              class="form-control"
+              min="1"
+              placeholder="10"
+              [class.is-invalid]="productForm.get('stock')?.invalid && productForm.get('stock')?.touched">
+            @if (productForm.get('stock')?.invalid && productForm.get('stock')?.touched) {
+            <div class="invalid-feedback d-block">
+              Estoque deve ser pelo menos 1 unidade
+            </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="category" class="form-label">Categoria *</label>
+            <select
+              id="category"
+              formControlName="category"
+              class="form-select"
+              [class.is-invalid]="productForm.get('category')?.invalid && productForm.get('category')?.touched">
+              <option value="">Selecione uma categoria</option>
+              @for (category of categories; track category) {
+              <option [value]="category">{{ category | titlecase }}</option>
+              }
+            </select>
+            @if (productForm.get('category')?.invalid && productForm.get('category')?.touched) {
+            <div class="invalid-feedback d-block">
+              Categoria é obrigatória
+            </div>
+            }
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="description" class="form-label">Descrição *</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              class="form-control"
+              rows="6"
+              placeholder="Descrição detalhada do produto"
+              [class.is-invalid]="productForm.get('description')?.invalid && productForm.get('description')?.touched"></textarea>
+            @if (productForm.get('description')?.invalid && productForm.get('description')?.touched) {
+            <div class="invalid-feedback d-block">
+              Descrição é obrigatória e deve ter pelo menos 10 caracteres
+            </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Imagem do Produto *</label>
+
+            <div class="mb-2">
+              <input
+                type="file"
+                id="imageFile"
+                (change)="onFileSelected($event)"
+                accept="image/*"
+                class="form-control"
+                #fileInput>
+              <small class="text-muted">Formatos: JPG, PNG, GIF (máx. 5MB)</small>
+            </div>
+
+            <div class="mt-3">
+              <small class="text-muted">Ou insira uma URL:</small>
+              <input
+                type="url"
+                id="image"
+                formControlName="image"
+                class="form-control mt-1"
+                placeholder="https://exemplo.com/imagem.jpg"
+                [class.is-invalid]="productForm.get('image')?.invalid && productForm.get('image')?.touched">
+            </div>
+
+            @if (productForm.get('image')?.invalid && productForm.get('image')?.touched) {
+            <div class="invalid-feedback d-block">
+              Imagem é obrigatória
+            </div>
+            }
+          </div>
+
+          @if (imagePreview || productForm.get('image')?.value) {
+          <div class="image-preview-container mb-3">
+            <h6>Preview da Imagem:</h6>
+            <div class="position-relative d-inline-block">
+              <img
+                [src]="imagePreview || productForm.get('image')?.value"
+                alt="Preview"
+                class="img-fluid rounded preview-image"
+                (error)="onImageError($event)">
+              <button
+                type="button"
+                class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                (click)="removeImage()"
+                title="Remover imagem">
+                ×
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mt-4 flex-wrap">
+        <button
+          type="submit"
+          [disabled]="productForm.invalid || isLoading"
+          class="btn btn-modern">
+          {{ isEditMode ? '💾 Atualizar Produto' : '➕ Adicionar Produto' }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="goBack()">
+          ← Voltar
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="goToAdmin()">
+          ⚙️ Painel Admin
+        </button>
+      </div>
+    </form>
+  </div>
+  }
+</div>
