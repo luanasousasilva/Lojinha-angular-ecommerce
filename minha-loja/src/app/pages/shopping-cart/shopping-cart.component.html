@@ -1,0 +1,139 @@
+<div class="container py-4">
+  <div class="glass-card p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">🛒 Seu Carrinho</h2>
+      <span class="badge bg-primary fs-6">{{ cartItemCount | async }} itens</span>
+    </div>
+  </div>
+
+  @if (cartItems | async; as items) {
+  @if (items.length > 0) {
+  <div class="glass-card p-4 mb-4">
+    <div class="row">
+      <div class="col-lg-8">
+        @for (item of items; track item.id) {
+        <div class="cart-item glass-card p-3 mb-3">
+          <div class="row align-items-center">
+            <div class="col-md-2">
+              <img [src]="item.image" [alt]="item.title" class="img-fluid rounded-3">
+            </div>
+            <div class="col-md-4">
+              <h6 class="mb-1">{{ item.title }}</h6>
+              <p class="text-muted mb-0 small">{{ item.category }}</p>
+            </div>
+            <div class="col-md-2">
+              <strong class="text-success">{{ item.price | currency:'BRL' }}</strong>
+            </div>
+            <div class="col-md-2">
+              <div class="quantity-controls d-flex align-items-center">
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  (click)="decreaseQuantity(item.id)"
+                  [disabled]="item.quantity <= 1">
+                  −
+                </button>
+                <span class="mx-3 fw-bold">{{ item.quantity }}</span>
+                <button class="btn btn-outline-secondary btn-sm" (click)="increaseQuantity(item.id)">+</button>
+              </div>
+            </div>
+            <div class="col-md-2 text-end">
+              <strong class="text-primary">{{ (item.price * item.quantity) | currency:'BRL' }}</strong>
+              <br>
+              <button
+                class="btn btn-sm btn-outline-danger mt-1"
+                (click)="removeItem(item.id)">
+                🗑️
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+
+      <div class="col-lg-4">
+        <div class="glass-card p-4">
+          <h5 class="mb-3">📦 Resumo do Pedido</h5>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal:</span>
+            <span>{{ cartTotal | async | currency:'BRL' }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Frete:</span>
+            <span class="text-success">Grátis</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between mb-3">
+            <strong>Total:</strong>
+            <strong class="text-primary fs-5">{{ cartTotal | async | currency:'BRL' }}</strong>
+          </div>
+          <div class="d-grid gap-2">
+            <button (click)="goToCheckout()" class="btn btn-modern">
+              🚀 Finalizar Compra
+            </button>
+            <button (click)="clearCart()" class="btn btn-outline-secondary">
+              🗑️ Limpar Carrinho
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  } @else {
+  <div class="glass-card p-5 text-center">
+    <div class="empty-state">
+      <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+      <h3 class="text-muted">Seu carrinho está vazio</h3>
+      <p class="text-muted mb-4">Que tal explorar nossos produtos incríveis?</p>
+      <a routerLink="/" class="btn btn-modern">
+        🛍️ Continuar Comprando
+      </a>
+    </div>
+  </div>
+  }
+  }
+
+  @if (showRemoveModal) {
+  <div class="modal-overlay" (click)="onModalConfirmed(false)">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h4 class="modal-title">Remover Item</h4>
+        <button type="button" class="btn-close" (click)="onModalConfirmed(false)">×</button>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja remover este item do carrinho?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onModalConfirmed(false)">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="onModalConfirmed(true)">
+          Remover
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (showClearModal) {
+  <div class="modal-overlay" (click)="onModalConfirmed(false)">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h4 class="modal-title">Limpar Carrinho</h4>
+        <button type="button" class="btn-close" (click)="onModalConfirmed(false)">×</button>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja limpar todo o carrinho?</p>
+        <p class="text-muted small">Esta ação não pode ser desfeita.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onModalConfirmed(false)">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="onModalConfirmed(true)">
+          Limpar Tudo
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>
