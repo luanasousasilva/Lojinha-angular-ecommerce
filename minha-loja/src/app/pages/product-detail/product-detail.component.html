@@ -1,0 +1,69 @@
+@if (product){
+<div class="container py-4">
+  <div class="glass-card">
+    <div class="row g-0">
+      <div class="col-md-5 position-relative">
+        <img
+          [src]="product.image"
+          class="img-fluid rounded-start product-detail-image"
+          [alt]="product.title"
+          [class.zoomed]="isZoomed"
+          (mouseenter)="isZoomed = true"
+          (mouseleave)="isZoomed = false"
+        />
+        @if (isInCart$ | async) {
+        <div class="in-cart-badge">
+          ✅ No carrinho
+        </div>
+        }
+      </div>
+      <div class="col-md-7">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h1 class="card-title h2">{{ product.title }}</h1>
+            <span class="badge bg-success fs-6">{{ product.price | currency:'BRL' }}</span>
+          </div>
+
+          <div class="rating mb-3">
+            @for (star of getRatingStars(); track $index) {
+            <span class="text-warning">⭐</span>
+            }
+            <small class="text-muted ms-2">({{ product.rating.count }} avaliações)</small>
+          </div>
+
+          <p class="card-text lead">{{ product.description }}</p>
+
+          <div class="product-meta mb-4">
+            <span class="badge bg-primary me-2">{{ product.category | titlecase }}</span>
+            <span class="badge bg-info">{{ getAvailabilityText() }}</span>
+          </div>
+
+          <div class="action-buttons">
+            <a routerLink="/" class="btn btn-outline-secondary btn-lg">
+              ← Voltar
+            </a>
+            @if (isInCart$ | async) {
+            <button [routerLink]="['/cart']" class="btn btn-success btn-lg ms-2">
+              🛒 Ir para Carrinho
+            </button>
+            } @else {
+            <button (click)="addToCart()" class="btn btn-modern btn-lg ms-2">
+              🛒 Adicionar ao Carrinho
+            </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+} @else {
+<div class="container py-4">
+  <div class="glass-card p-5 text-center">
+    <div class="spinner-border text-primary mb-3" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p>Carregando detalhes do produto...</p>
+  </div>
+</div>
+}
