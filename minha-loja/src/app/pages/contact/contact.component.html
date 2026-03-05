@@ -1,0 +1,133 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="glass-card p-5">
+        <div class="text-center mb-5">
+          <h1 class="display-5 fw-bold mb-3">📞 Fale Conosco</h1>
+          <p class="text-muted">Tem alguma dúvida? Estamos aqui para ajudar!</p>
+        </div>
+
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <label for="name" class="form-label">Nome Completo *</label>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control form-control-lg"
+                [class.is-invalid]="submitted && f['name'].errors"
+                placeholder="Seu nome completo">
+              @if (submitted && f['name'].errors) {
+              <div class="invalid-feedback d-block">
+                @if (f['name'].errors['required']) {
+                <div>Nome é obrigatório</div>
+                }
+                @if (f['name'].errors['minlength']) {
+                <div>Nome deve ter pelo menos 3 caracteres</div>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="col-md-6 mb-4">
+              <label for="email" class="form-label">E-mail *</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control form-control-lg"
+                [class.is-invalid]="submitted && f['email'].errors"
+                placeholder="seu@email.com">
+              @if (submitted && f['email'].errors) {
+              <div class="invalid-feedback d-block">
+                @if (f['email'].errors['required']) {
+                <div>E-mail é obrigatório</div>
+                }
+                @if (f['email'].errors['email']) {
+                <div>Formato de e-mail inválido</div>
+                }
+              </div>
+              }
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="phone" class="form-label">Telefone *</label>
+            <input
+              type="tel"
+              id="phone"
+              formControlName="phone"
+              class="form-control form-control-lg"
+              [class.is-invalid]="submitted && f['phone'].errors"
+              placeholder="(11) 99999-9999">
+            @if (submitted && f['phone'].errors) {
+            <div class="invalid-feedback d-block">
+              @if (f['phone'].errors['required']) {
+              <div>Telefone é obrigatório</div>
+              }
+              @if (f['phone'].errors['phone']) {
+              <div>Formato de telefone inválido. Use: (11) 99999-9999</div>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label for="subject" class="form-label">Assunto *</label>
+            <select
+              id="subject"
+              formControlName="subject"
+              class="form-select form-select-lg"
+              [class.is-invalid]="submitted && f['subject'].errors">
+              <option value="">Selecione um assunto</option>
+              <option value="duvida">Dúvida sobre produtos</option>
+              <option value="suporte">Suporte técnico</option>
+              <option value="reclamacao">Reclamação</option>
+              <option value="sugestao">Sugestão</option>
+              <option value="outro">Outro</option>
+            </select>
+            @if (submitted && f['subject'].errors) {
+            <div class="invalid-feedback d-block">
+              Assunto é obrigatório
+            </div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label for="message" class="form-label">Mensagem *</label>
+            <textarea
+              id="message"
+              formControlName="message"
+              rows="5"
+              class="form-control form-control-lg"
+              [class.is-invalid]="submitted && f['message'].errors"
+              placeholder="Conte-nos como podemos ajudar..."></textarea>
+            @if (submitted && f['message'].errors) {
+            <div class="invalid-feedback d-block">
+              @if (f['message'].errors['required']) {
+              <div>Mensagem é obrigatória</div>
+              }
+              @if (f['message'].errors['minlength']) {
+              <div>Mensagem deve ter pelo menos 10 caracteres</div>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <button
+              type="submit"
+              [disabled]="contactForm.invalid"
+              class="btn btn-modern btn-lg">
+              📨 Enviar Mensagem
+            </button>
+            <a routerLink="/" class="btn btn-outline-secondary">
+              ← Voltar à Loja
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

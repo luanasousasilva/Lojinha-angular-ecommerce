@@ -1,0 +1,24 @@
+<div class="categories-modern">
+  <h3 class="section-title">
+    <i class="fas fa-tags me-2"></i>
+    Categorias
+  </h3>
+  <div class="categories-grid">
+    @for (category of categories(); track category){
+    <button
+      class="category-btn"
+      (click)="selectCategory(category)">
+      <span class="category-icon">
+        @switch (category) {
+          @case ("electronics") { 📱 }
+          @case ("jewelery") { 💎 }
+          @case ("men's clothing") { 👕 }
+          @case ("women's clothing") { 👚 }
+          @default { 🏷️ }
+        }
+      </span>
+      {{ category | titlecase }}
+    </button>
+    }
+  </div>
+</div>
