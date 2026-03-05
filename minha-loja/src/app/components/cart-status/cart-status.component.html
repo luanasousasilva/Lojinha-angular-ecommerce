@@ -1,0 +1,7 @@
+<div class="cart-status-modern">
+  <div class="cart-indicator" [class.has-items]="(cartItemCount | async)! > 0">
+    <i class="fas fa-shopping-bag"></i>
+    <span class="cart-count">{{ cartItemCount | async }}</span>
+    <span class="cart-text">item(s)</span>
+  </div>
+</div>

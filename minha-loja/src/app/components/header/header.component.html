@@ -1,0 +1,37 @@
+<header class="header-modern">
+  <div class="container">
+    <div class="header-content">
+      <h1 class="logo">{{ 'header.title' | translate }}</h1>
+      <div class="header-actions">
+        <button class="btn btn-language" (click)="switchLanguage()">
+          {{ (currentLang | async) === 'pt' ? '🇧🇷 PT' : '🇺🇸 EN' }}
+        </button>
+
+        @if (currentUser | async; as user) {
+        <div class="user-info">
+          <span class="user-name">{{ 'header.welcome' | translate:{name: user.name} }}</span>
+          @if (user.role === 'admin') {
+          <a routerLink="/admin" class="btn btn-admin ms-2">
+            ⚙️ {{ 'header.admin' | translate }}
+          </a>
+          }
+          <button class="btn btn-logout ms-2" (click)="logout()">
+            🚪 {{ 'header.logout' | translate }}
+          </button>
+        </div>
+        } @else {
+        <div class="auth-buttons">
+          <a routerLink="/login" class="btn btn-auth me-2">{{ 'header.login' | translate }}</a>
+          <a routerLink="/register" class="btn btn-auth btn-register">{{ 'header.register' | translate }}</a>
+        </div>
+        }
+
+        <app-cart-status></app-cart-status>
+        <a routerLink="/cart" class="btn btn-modern cart-btn">
+          <i class="fas fa-shopping-cart me-2"></i>
+          {{ 'header.cart' | translate }}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
