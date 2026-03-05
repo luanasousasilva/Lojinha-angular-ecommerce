@@ -1,0 +1,75 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+
+      <div class="glass-card p-4">
+        <div class="text-center mb-4">
+          <h1 class="h3 fw-bold">🔐 Entrar na Sua Conta</h1>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-control"
+              [class.is-invalid]="submitted && f['email'].errors"
+              placeholder="seu@email.com">
+            @if (submitted && f['email'].errors) {
+            <div class="invalid-feedback d-block">
+              @if (f['email'].errors['required']) {
+              <div>Email é obrigatório</div>
+              }
+              @if (f['email'].errors['email']) {
+              <div>Email inválido</div>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Senha</label>
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              class="form-control"
+              [class.is-invalid]="submitted && f['password'].errors"
+              placeholder="Sua senha">
+            @if (submitted && f['password'].errors) {
+            <div class="invalid-feedback d-block">
+              @if (f['password'].errors['required']) {
+              <div>Senha é obrigatória</div>
+              }
+              @if (f['password'].errors['minlength']) {
+              <div>Senha deve ter pelo menos 6 caracteres</div>
+              }
+            </div>
+            }
+          </div>
+
+          @if (error) {
+          <div class="alert alert-danger">{{ error }}</div>
+          }
+
+          <button type="submit" class="btn btn-modern w-100 mb-3">
+            Entrar
+          </button>
+
+          <div class="mb-3">
+            <button class="btn btn-outline-secondary w-100 mb-3" (click)="goToStore()">
+              ← Voltar para Loja
+            </button>
+          </div>
+
+          <div class="text-center">
+            <span class="text-muted">Não tem uma conta?</span>
+            <a routerLink="/register" class="ms-1">Cadastre-se</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
