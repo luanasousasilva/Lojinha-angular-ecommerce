@@ -70,6 +70,39 @@ http://localhost:4200
 
 ---
 
+## 📄 Documentação da aplicação
+
+A documentação técnica do projeto é gerada automaticamente utilizando o Compodoc.
+
+### Gerar a documentação
+
+```
+npx compodoc -p tsconfig.app.json
+```
+
+### Rodar a documentação no navegador
+
+```
+npx compodoc -p tsconfig.app.json -s
+```
+
+A documentação estará disponível em:
+
+```
+http://localhost:8080
+```
+
+### O que a documentação inclui
+
+* Componentes da aplicação
+* Serviços (services)
+* Módulos
+* Estrutura de rotas
+* Dependências entre arquivos
+* Diagrama da arquitetura
+
+---
+
 ## ✨ Funcionalidades
 
 * Listagem de produtos
